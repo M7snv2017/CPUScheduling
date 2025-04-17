@@ -5,17 +5,19 @@ public class Process
     String name;
     String state;
     int arraivaltime;
-    Burstint Time;
-    int Priority;
+    int burstintTime;
+    int priority;
 
-    public Process(int id, String name, String state, int arraivaltime, Burstint Time, int Priority) {
+    public Process(int id, String name, String state, int arraivaltime, int burstintTime, int priority) {
         this.id = id;
         this.name = name;
         this.state = state;
         this.arraivaltime = arraivaltime;
-        this.Time = Time;
-        this.Priority = Priority;
+        this.burstintTime = burstintTime;
+        this.priority = priority;
     }
+
+
     
     
 
