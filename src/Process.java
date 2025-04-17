@@ -1,24 +1,30 @@
+import java.awt.FlowLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class Process 
-{
-    int id;
-    String name;
+public class Process extends JPanel {
+    static int counter = 1;  // shared counter for all processes
+    int id;                 // each process's unique id
     String state;
     int arraivaltime;
-    int burstintTime;
+    int burstTime;
     int priority;
+    JLabel lname = new JLabel();
+    JLabel lstate = new JLabel();
 
-    public Process(int id, String name, String state, int arraivaltime, int burstintTime, int priority) {
-        this.id = id;
-        this.name = name;
-        this.state = state;
+    public Process(int arraivaltime, int burstTime, int priority) {
+        setSize(150, 150);
+        setLayout(new FlowLayout());
+
+        this.id = counter++;  // assign then increment counter
+        this.state = "Not Arraived";  // Not Arraived, Arraived, Running, Interrupt, Finished
         this.arraivaltime = arraivaltime;
-        this.burstintTime = burstintTime;
+        this.burstTime = burstTime;
         this.priority = priority;
+
+        lname.setText("P" + this.id);
+        lstate.setText(state);
+        add(lname);
+        add(lstate);
     }
-
-
-    
-    
-
 }
