@@ -3,6 +3,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
@@ -10,6 +13,7 @@ public class Main extends javax.swing.JFrame {
     int tim=0;
     Timer timer;
     
+    int finishedProcess=0;
     public Main() {
         initComponents();
 //        jPanel2.setLayout(new FlowLayout());
@@ -21,12 +25,12 @@ public class Main extends javax.swing.JFrame {
         timerbtn.setSize(10,10);
         
         timer = new Timer(1000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            tim++;
-            time.setText("Time: " + tim);
-        }
-    });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                increasingTime();
+            }
+        });
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -193,12 +197,13 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    List<Process> processList = new ArrayList<>();
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(Process.counter<33)
         {
             Process p=new Process(Integer.parseInt(arr.getText()), Integer.parseInt(brst.getText()), Integer.parseInt(prio.getText()));
-        
+            processList.add(p);
             jPanel2.add(p);
             jPanel2.revalidate();
             jPanel2.repaint();
@@ -206,14 +211,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        tim=timeParse();
-        time.setText("Time: "+(++tim));
+        increasingTime();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        tim=timeParse();
-        if(tim>0)
-            time.setText("Time: "+(--tim));
+        decreasingTime();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     boolean play=false;
@@ -223,7 +225,7 @@ public class Main extends javax.swing.JFrame {
         if(play)
         {
             timer.start();
-            timerbtn.setText("  ️   ⏸️️");
+            timerbtn.setText("  ️ ⏸️️");
         }else{
             timer.stop();
             timerbtn.setText("   ▶️");
@@ -242,6 +244,96 @@ public class Main extends javax.swing.JFrame {
     
     
     //functions
+void decreasingTime() {
+    tim = timeParse();
+
+    if (tim > 0) {
+        tim--;  // Decrease total time
+        time.setText("Time: " + tim);
+
+        // Do NOT decrease remainingTime when going backwards!
+
+        // Get the process with shortest remaining time
+        Process currentProcess = getShortestRemainingProcess(tim);
+
+        // Update process states for this specific time
+        for (Process p : processList) {
+            if (p.arraivaltime > tim) {
+                p.state = "Not Arrived";  // Process hasn't arrived yet
+            } else if (p.remainingTime == 0) {
+                p.state = "Finished";     // Already finished
+            } else if (p == currentProcess) {
+                p.state = "Running";      // Currently the shortest job
+            } else {
+                p.state = "Interrupt";    // Waiting for CPU
+            }
+            p.lstate.setText(p.state);  // Update label text
+        }
+    }
+}
+
+    void increasingTime()
+    {
+        if (finishedProcess == Process.counter) {
+            timer.stop();
+            JOptionPane.showMessageDialog(this, "All processes finished!");
+            play = false;
+            timerbtn.setText("   ▶️");
+            return;
+        }
+
+
+        finishedProcess++;
+        tim++;
+        time.setText("Time: " + tim);
+
+        Process current = getShortestRemainingProcess(tim);
+        if (current != null) 
+        {
+            current.state = "Running";
+            current.lstate.setText(current.state);
+            current.remainingTime--;
+
+            if (current.remainingTime == 0) {
+                current.state = "Finished";
+                current.lstate.setText(current.state);
+            }
+        }
+    }
+    public Process getShortestRemainingProcess(int currentTime) {
+    Process shortest = null;
+    int minRemainingTime = Integer.MAX_VALUE;
+
+    for (Process p : processList) {
+        if (p.arraivaltime <= currentTime && p.remainingTime > 0) {
+            if (p.remainingTime < minRemainingTime) {
+                minRemainingTime = p.remainingTime;
+                shortest = p;
+            }
+        }
+    }
+
+    for (Process p : processList) {
+        if (p.arraivaltime <= currentTime && p.remainingTime > 0) {
+            if (p == shortest) {
+                p.state = "Running";
+            } else {
+                p.state = "Interrupt";
+            }
+        } else if (p.arraivaltime == currentTime) {
+            p.state = "Arrived";  
+        }else if(p.arraivaltime<currentTime)
+        {
+            p.state = "Not Arrived"; 
+        }
+        p.lstate.setText(p.state);
+    }
+
+    return shortest;
+}
+
+
+
     int timeParse()
     {
         String fullText = time.getText();  // Example: "Time: 5"

@@ -9,6 +9,7 @@ public class Process extends JPanel {
     int arraivaltime;
     int burstTime;
     int priority;
+    int remainingTime;
     JLabel lname = new JLabel();
     JLabel lstate = new JLabel();
 
@@ -21,6 +22,7 @@ public class Process extends JPanel {
         this.arraivaltime = arraivaltime;
         this.burstTime = burstTime;
         this.priority = priority;
+        this.remainingTime = burstTime;
 
         lname.setText("P" + this.id);
         lstate.setText(state);
