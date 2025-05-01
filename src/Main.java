@@ -3,6 +3,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
@@ -10,6 +13,7 @@ public class Main extends javax.swing.JFrame {
     int tim=0;
     Timer timer;
     
+    int finishedProcess=0;
     public Main() {
         initComponents();
 //        jPanel2.setLayout(new FlowLayout());
@@ -21,12 +25,12 @@ public class Main extends javax.swing.JFrame {
         timerbtn.setSize(10,10);
         
         timer = new Timer(1000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            tim++;
-            time.setText("Time: " + tim);
-        }
-    });
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                increasingTime();
+            }
+        });
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -38,6 +42,8 @@ public class Main extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         timerbtn = new javax.swing.JButton();
+        algori = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -94,19 +100,36 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        algori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "SJF", "SRT" }));
+        algori.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algoriActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Choose Algorithm");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(87, 87, 87)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0)
-                .addComponent(timerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, 0)
+                        .addComponent(timerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(algori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -123,6 +146,10 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(timerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(algori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -158,7 +185,6 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
                         .addComponent(jLabel3)
                         .addGap(56, 56, 56)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +192,7 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(prio, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 154, Short.MAX_VALUE)
+                .addGap(0, 146, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
         );
@@ -193,12 +219,19 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    List<Process> processList = new ArrayList<>();
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(Process.counter<33)
+        if(arr.getText().trim().isEmpty() || brst.getText().trim().isEmpty() || prio.getText().trim().isEmpty())
         {
-            Process p=new Process(Integer.parseInt(arr.getText()), Integer.parseInt(brst.getText()), Integer.parseInt(prio.getText()));
-        
+            JOptionPane.showMessageDialog(this, "All fields must be filled.");
+        }
+        else if(Process.counter<33)
+        {
+            
+            
+            Process p=new Process(Integer.parseInt( arr.getText()), Integer.parseInt(brst.getText()), Integer.parseInt(prio.getText()));
+            processList.add(p);
             jPanel2.add(p);
             jPanel2.revalidate();
             jPanel2.repaint();
@@ -206,14 +239,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        tim=timeParse();
-        time.setText("Time: "+(++tim));
+        increasingTime();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        tim=timeParse();
-        if(tim>0)
-            time.setText("Time: "+(--tim));
+        decreasingTime();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     boolean play=false;
@@ -223,12 +253,135 @@ public class Main extends javax.swing.JFrame {
         if(play)
         {
             timer.start();
-            timerbtn.setText("  ️   ⏸️️");
+            timerbtn.setText("  ️ ⏸️️");
         }else{
             timer.stop();
             timerbtn.setText("   ▶️");
         }
     }//GEN-LAST:event_timerbtnActionPerformed
+
+    private void algoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoriActionPerformed
+        resetTime();
+    }//GEN-LAST:event_algoriActionPerformed
+
+    
+    
+    
+    
+    //functions
+    void decreasingTime() {
+        tim = timeParse();
+
+        if (tim > 0) {
+            tim--;  // Decrease total time
+            time.setText("Time: " + tim);
+
+            // Do NOT decrease remainingTime when going backwards!
+
+            // Get the process with shortest remaining time
+            Process currentProcess = getShortestRemainingProcess(tim);
+
+            // Update process states for this specific time
+            for (Process p : processList) {
+                if (p.arraivaltime > tim) {
+                    p.setLstate("Not Arrived");
+                } else if (p.remainingTime == 0) {
+                    p.setLstate("Finished");
+                } else if (p == currentProcess) {
+                    p.setLstate("Running");
+                } else {
+                    p.setLstate("Interrupt");
+                }
+            }
+        }
+    }
+
+    void increasingTime(){
+        if (finishedProcess == Process.counter) {
+            timer.stop();
+            JOptionPane.showMessageDialog(this, "All processes finished!");
+            play = false;
+            timerbtn.setText("   ▶️");
+            return;
+        }
+
+
+        finishedProcess++;
+        tim++;
+        time.setText("Time: " + tim);
+
+        Process current = getShortestRemainingProcess(tim);
+        if (current != null) 
+        {
+            current.setLstate("Running");
+            current.remainingTime--;
+
+            if (current.remainingTime == 0) {
+                current.setLstate("Finished");
+            }
+        }
+    }
+    
+    public Process getShortestRemainingProcess(int currentTime){
+        Process shortest = null;
+        int minRemainingTime = Integer.MAX_VALUE;
+
+        for (Process p : processList) {
+            if (p.arraivaltime <= currentTime && p.remainingTime > 0) {
+                if (p.remainingTime < minRemainingTime) {
+                    minRemainingTime = p.remainingTime;
+                    shortest = p;
+                }
+            }
+        }
+
+        for (Process p : processList) {
+            if (p.arraivaltime <= currentTime && p.remainingTime > 0) {
+                if (p == shortest) {
+                    p.setLstate("Running");
+                } else {
+                    p.setLstate("Interrupt");
+                }
+            } else if (p.arraivaltime == currentTime) {
+                p.setLstate("Arrived");
+            }else if(p.arraivaltime>currentTime)
+            {
+                p.setLstate("Not Arrived");
+            }
+        }
+
+        return shortest;
+    }
+
+    void resetTime() {
+        // Stop the timer if it's running
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
+
+        // Reset time
+        tim = 0;
+        finishedProcess = 0;
+        time.setText("Time: 0");
+        play = false;
+        timerbtn.setText("   ▶️"); // Reset play button icon
+
+        // Reset each process
+        for (Process p : processList) {
+            p.remainingTime = p.burstTime; // Assuming bursttime is the original full time
+            if (p.arraivaltime > tim) {
+                p.setLstate("Not Arrived");
+
+            } else {
+                p.setLstate("Arrived");
+            }
+        }
+
+        // Optionally: Refresh the panel if needed
+        jPanel2.revalidate();
+        jPanel2.repaint();
+    }
+
 
     
     
@@ -241,7 +394,13 @@ public class Main extends javax.swing.JFrame {
     
     
     
-    //functions
+    
+    
+    
+    
+    
+    
+
     int timeParse()
     {
         String fullText = time.getText();  // Example: "Time: 5"
@@ -278,6 +437,7 @@ public class Main extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JComboBox<String> algori;
     private javax.swing.JTextField arr;
     private javax.swing.JTextField brst;
     private javax.swing.JButton jButton1;
@@ -286,6 +446,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField prio;
