@@ -9,30 +9,7 @@ import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
-    //public variables
-    int tim=0;
-    Timer timer;
     
-    int finishedProcess=0;
-    public Main() {
-        initComponents();
-//        jPanel2.setLayout(new FlowLayout());
-        jPanel2.setSize(476, 208);
-//        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
-        jPanel2.setLayout(new java.awt.GridLayout(8, 4, 10, 10));
-        time.setText("Time: "+tim);
-        
-        timerbtn.setSize(10,10);
-        
-        timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                increasingTime();
-            }
-        });
-
-    }
-
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -47,12 +24,11 @@ public class Main extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         arr = new javax.swing.JTextField();
         brst = new javax.swing.JTextField();
-        prio = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CPU Scheduling");
         setMaximumSize(new java.awt.Dimension(912, 538));
         setMinimumSize(new java.awt.Dimension(912, 538));
         setResizable(false);
@@ -166,9 +142,6 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Burst Time");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Priority");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -185,11 +158,8 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(56, 56, 56)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(prio, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(120, 120, 120)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 146, Short.MAX_VALUE)
@@ -208,30 +178,53 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(prio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addGap(72, 72, 72)
                 .addComponent(jButton1)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    List<Process> processList = new ArrayList<>();
+    
+    
+    //public variables
+    int tim=0;
+    Timer timer;
+    int finishedProcess=0;
+    List<Process> Totalprocess = new ArrayList<>();
+
+    boolean play=false;
+    
+    public Main() {
+        initComponents();
+//        jPanel2.setLayout(new FlowLayout());
+        jPanel2.setSize(476, 208);
+//        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+        jPanel2.setLayout(new java.awt.GridLayout(8, 4, 10, 10));
+        time.setText("Time: "+tim);
+        
+        timerbtn.setSize(10,10);
+        
+        timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                increasingTime();
+            }
+        });
+
+    }
+    
+    
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(arr.getText().trim().isEmpty() || brst.getText().trim().isEmpty() || prio.getText().trim().isEmpty())
+        if(arr.getText().trim().isEmpty() || brst.getText().trim().isEmpty() )
         {
             JOptionPane.showMessageDialog(this, "All fields must be filled.");
         }
         else if(Process.counter<33)
         {
-            
-            
-            Process p=new Process(Integer.parseInt( arr.getText()), Integer.parseInt(brst.getText()), Integer.parseInt(prio.getText()));
-            processList.add(p);
+            Process p=new Process(Integer.parseInt( arr.getText()), Integer.parseInt(brst.getText()));
+            Totalprocess.add(p);
             jPanel2.add(p);
             jPanel2.revalidate();
             jPanel2.repaint();
@@ -246,12 +239,10 @@ public class Main extends javax.swing.JFrame {
         decreasingTime();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    boolean play=false;
     private void timerbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timerbtnActionPerformed
         play=!play;
         tim=timeParse();
-        if(play)
-        {
+        if(play){
             timer.start();
             timerbtn.setText("  ️ ⏸️️");
         }else{
@@ -269,90 +260,6 @@ public class Main extends javax.swing.JFrame {
     
     
     //functions
-    void decreasingTime() {
-        tim = timeParse();
-
-        if (tim > 0) {
-            tim--;  // Decrease total time
-            time.setText("Time: " + tim);
-
-            // Do NOT decrease remainingTime when going backwards!
-
-            // Get the process with shortest remaining time
-            Process currentProcess = getShortestRemainingProcess(tim);
-
-            // Update process states for this specific time
-            for (Process p : processList) {
-                if (p.arraivaltime > tim) {
-                    p.setLstate("Not Arrived");
-                } else if (p.remainingTime == 0) {
-                    p.setLstate("Finished");
-                } else if (p == currentProcess) {
-                    p.setLstate("Running");
-                } else {
-                    p.setLstate("Interrupt");
-                }
-            }
-        }
-    }
-
-    void increasingTime(){
-        if (finishedProcess == Process.counter) {
-            timer.stop();
-            JOptionPane.showMessageDialog(this, "All processes finished!");
-            play = false;
-            timerbtn.setText("   ▶️");
-            return;
-        }
-
-
-        finishedProcess++;
-        tim++;
-        time.setText("Time: " + tim);
-
-        Process current = getShortestRemainingProcess(tim);
-        if (current != null) 
-        {
-            current.setLstate("Running");
-            current.remainingTime--;
-
-            if (current.remainingTime == 0) {
-                current.setLstate("Finished");
-            }
-        }
-    }
-    
-    public Process getShortestRemainingProcess(int currentTime){
-        Process shortest = null;
-        int minRemainingTime = Integer.MAX_VALUE;
-
-        for (Process p : processList) {
-            if (p.arraivaltime <= currentTime && p.remainingTime > 0) {
-                if (p.remainingTime < minRemainingTime) {
-                    minRemainingTime = p.remainingTime;
-                    shortest = p;
-                }
-            }
-        }
-
-        for (Process p : processList) {
-            if (p.arraivaltime <= currentTime && p.remainingTime > 0) {
-                if (p == shortest) {
-                    p.setLstate("Running");
-                } else {
-                    p.setLstate("Interrupt");
-                }
-            } else if (p.arraivaltime == currentTime) {
-                p.setLstate("Arrived");
-            }else if(p.arraivaltime>currentTime)
-            {
-                p.setLstate("Not Arrived");
-            }
-        }
-
-        return shortest;
-    }
-
     void resetTime() {
         // Stop the timer if it's running
         if (timer != null && timer.isRunning()) {
@@ -365,15 +272,36 @@ public class Main extends javax.swing.JFrame {
         time.setText("Time: 0");
         play = false;
         timerbtn.setText("   ▶️"); // Reset play button icon
-
+        
+        Process.counter = 0;
+        
         // Reset each process
-        for (Process p : processList) {
-            p.remainingTime = p.burstTime; // Assuming bursttime is the original full time
+        for (Process p : Totalprocess) {
+//            p.time2Die = -1;
+//            p.remainingTime = p.burstTime; // Assuming bursttime is the original full time
+//            if (p.arraivaltime > 0) {
+//                p.setLstate("Not Arrived");
+//
+//            } else {
+//                p.setLstate("Arrived");
+//            }
+
+            int b=p.burstTime;
+            int a=p.arraivaltime;
+            p=new Process(a, b);
+            Process cp=null;
+            
+            
             if (p.arraivaltime > tim) {
                 p.setLstate("Not Arrived");
-
-            } else {
+            }else if(p.arraivaltime==tim){
                 p.setLstate("Arrived");
+            }else if (p.time2Die <=tim && p.time2Die !=-1) {
+                p.setLstate("Finished");
+            } else if (p == cp) {
+                p.setLstate("Running");
+            } else if(p.remainingTime != p.burstTime){
+                p.setLstate("Interrupted");
             }
         }
 
@@ -382,31 +310,234 @@ public class Main extends javax.swing.JFrame {
         jPanel2.repaint();
     }
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    int timeParse()
-    {
+    int timeParse(){
         String fullText = time.getText();  // Example: "Time: 5"
         String numberPart = fullText.substring(6);  // Skips "Time: " (6 characters)
         return Integer.parseInt(numberPart);
     }
+    
+    
+    void decreasingTime() {
+        if (tim <= 0) return;
+        
+        
+        tim--;
+        time.setText("Time: " + tim);
+
+        finishedProcess = 0;
+
+        for (Process p : Totalprocess) {
+            if (p.arraivaltime <= tim) {
+                p.setLstate("Arrived");
+
+                // Restore or recompute remainingTime manually
+                int executedTime = tim - p.arraivaltime;
+                if (executedTime >= p.burstTime) {
+                    p.remainingTime = 0;
+                } else {
+                    p.remainingTime = p.burstTime - executedTime;
+                    p.isExist=true;
+                }
+            } else {
+                p.setLstate("Not Arrived");
+                p.remainingTime = p.burstTime;
+            }
+        }
+
+        Checkstate(); // Just to update labels
+    }
+
+    void increasingTime(){
+
+        Process p = Checkstate();
+        
+        if (finishedProcess == Process.counter) {
+            timer.stop();
+            JOptionPane.showMessageDialog(this, "All processes finished!");
+            play = false;
+            timerbtn.setText("   ▶️");
+            return;
+        }
+        if (p != null) 
+        {   
+            
+            p.remainingTime--;
+            
+//            if (p.remainingTime == 0) {
+//                finishedProcess++;
+//                p.time2Die=tim;
+//                Curprocess.remove(p);
+//            }
+            if (p.remainingTime <= 0 && !p.getLstate().equals("Finished")) { 
+                p.setLstate("Finished");
+                p.time2Die = tim;
+                finishedProcess++;
+                p.isExist=false;
+            }
+        }
+        
+        time.setText("Time: " + ++tim);
+        Checkstate();
+        
+        //debug
+//        System.out.println("Time: "+tim);
+//        for (Process pr : Curprocess) {
+//            System.out.println(pr);
+//        }
+    }
+    
+
+//    Process Checkstate(){
+//        Process cp=null;
+//        if(algori.getSelectedIndex() == 0)
+//        {
+//            cp = getFCFS();
+//        }
+//        else if(algori.getSelectedIndex() == 1)
+//        {
+//            cp = getSJF();
+//        }
+//        else if(algori.getSelectedIndex() == 2)
+//        {
+//            cp = getSRT();
+//        }
+//        
+//        
+//        for (Process p : Totalprocess) {
+//            if (p.arraivaltime > tim) {
+//                p.setLstate("Not Arrived");
+//            }else if(p.arraivaltime==tim){
+//                p.setLstate("Arrived");
+//            }else if (p.time2Die <=tim && p.time2Die !=-1) {
+//                p.setLstate("Finished");
+//            } else if (p == cp) {
+//                p.setLstate("Running");
+//            } else if(p.remainingTime != p.burstTime){
+//                p.setLstate("Interrupted");
+//            }
+//        }
+//        return cp;
+//    }
+Process Checkstate() {
+    Process cp = null;
+    switch(algori.getSelectedIndex()) {
+        case 0: cp = getFCFS(); break;
+        case 1: cp = getSJF(); break;
+        case 2: cp = getSRT(); break;  // Now uses the corrected SRT
+    }
+    
+    // Update process states
+    for (Process p : Totalprocess) {
+        if (p.time2Die != -1 && p.time2Die <= tim) {
+            p.setLstate("Finished");
+        } 
+        else if (p == cp) {
+            p.setLstate("Running");
+        } 
+        else if (p.arraivaltime > tim) {
+            p.setLstate("Not Arrived");
+        } 
+        else if (p.remainingTime != p.burstTime) {
+            p.setLstate("Interrupted");
+        }
+        else if (p.arraivaltime <= tim) {
+            p.setLstate("Arrived");
+        }
+    }
+    
+    return cp;
+}
+    //algorithms
+    Process getFCFS(){
+        Process pr=null;
+        int i=0;
+        for (Process p : Totalprocess)
+        {
+            if(!p.isExist)
+                continue;
+            if(pr == null || pr.arraivaltime > p.arraivaltime)
+            {
+                pr=p;
+            }
+        }
+        return pr;
+    }
+    
+//    Process getSJF() {
+//        Process pr = null;
+//        for (Process p : Totalprocess) {
+//            if(!p.isExist)
+//                continue;
+//            if (pr == null || p.burstTime < pr.burstTime) {
+//                pr = p;
+//            }
+//        }
+//        return pr;
+//    }
+    
+    Process getSJF() {
+        Process shortest = null;
+
+        // First check if there's a currently running process
+        for (Process p : Totalprocess) {
+            if (p.getLstate().equals("Running")) {
+                // In non-preemptive SJF, we should let the running process continue
+                return p;
+            }
+        }
+
+        // If no process is running, find the shortest job that has arrived
+        for (Process p : Totalprocess) {
+            if (p.arraivaltime <= tim && 
+                !p.getLstate().equals("Finished") && 
+                (shortest == null || p.burstTime < shortest.burstTime)) {
+                shortest = p;
+            }
+        }
+
+        return shortest;
+    }
+    
+//    Process getSRT() {
+//        Process pr = null;
+//        for (Process p : Totalprocess) {
+//            if(!p.isExist)
+//                continue;
+//            if (pr == null || p.remainingTime < pr.remainingTime) {
+//                System.out.println(pr);
+//                pr = p;
+//                System.out.println(pr);
+//            }
+//        }
+//        return pr;
+//    }
+    Process getSRT() {
+        Process shortestRemaining = null;
+
+        // Only consider processes that have arrived and aren't finished
+        for (Process p : Totalprocess) {
+            if (p.arraivaltime <= tim &&          // Process has arrived
+                p.remainingTime > 0 &&            // Process isn't finished
+                p.getLstate() != "Finished") {     // Additional state check
+
+                if (shortestRemaining == null || 
+                    p.remainingTime < shortestRemaining.remainingTime) {
+                    shortestRemaining = p;
+                }
+            }
+        }
+
+        return shortestRemaining;
+    }
+    
+    
+    
+    
+    
+    
+    
+
+    
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -445,11 +576,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField prio;
     public javax.swing.JLabel time;
     private javax.swing.JButton timerbtn;
     // End of variables declaration//GEN-END:variables
