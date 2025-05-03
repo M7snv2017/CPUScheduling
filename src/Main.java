@@ -376,49 +376,16 @@ public class Main extends javax.swing.JFrame {
     }
     
 
-//    Process Checkstate(){
-//        Process cp=null;
-//        if(algori.getSelectedIndex() == 0)
-//        {
-//            cp = getFCFS();
-//        }
-//        else if(algori.getSelectedIndex() == 1)
-//        {
-//            cp = getSJF();
-//        }
-//        else if(algori.getSelectedIndex() == 2)
-//        {
-//            cp = getSRT();
-//        }
-//        
-//        
-//        for (Process p : Totalprocess) {
-//            if (p.arraivaltime > tim) {
-//                p.setLstate("Not Arrived");
-//            }else if(p.arraivaltime==tim){
-//                p.setLstate("Arrived");
-//            }else if (p.time2Die <=tim && p.time2Die !=-1) {
-//                p.setLstate("Finished");
-//            } else if (p == cp) {
-//                p.setLstate("Running");
-//            } else if(p.remainingTime != p.burstTime){
-//                p.setLstate("Interrupted");
-//            }
-//        }
-//        return cp;
-//    }
-    
-Process Checkstate() {
-    Process cp = null;
-    switch(algori.getSelectedIndex()) {
-        case 0: cp = getFCFS(); break;
-        case 1: cp = getSJF(); break;
-        case 2: cp = getSRT(); break;  // Now uses the corrected SRT
+    Process Checkstate() {
+        Process cp = null;
+        switch(algori.getSelectedIndex()) {
+            case 0: cp = getFCFS(); break;
+            case 1: cp = getSJF(); break;
+            case 2: cp = getSRT(); break;  // Now uses the corrected SRT
+        }
+        return colorize(cp);
     }
-    return colorize(cp);
-}
-Process colorize(Process cp)
-{
+    Process colorize(Process cp){
     // Update process states
     for (Process p : Totalprocess) {
         if (p.time2Die != -1 && p.time2Die <= tim) {
@@ -440,6 +407,7 @@ Process colorize(Process cp)
     
     return cp;
 }
+    
     //algorithms
     Process getFCFS(){
         Process pr=null;
@@ -455,18 +423,6 @@ Process colorize(Process cp)
         }
         return pr;
     }
-    
-//    Process getSJF() {
-//        Process pr = null;
-//        for (Process p : Totalprocess) {
-//            if(!p.isExist)
-//                continue;
-//            if (pr == null || p.burstTime < pr.burstTime) {
-//                pr = p;
-//            }
-//        }
-//        return pr;
-//    }
     
     Process getSJF() {
         Process shortest = null;
@@ -490,20 +446,7 @@ Process colorize(Process cp)
 
         return shortest;
     }
-    
-//    Process getSRT() {
-//        Process pr = null;
-//        for (Process p : Totalprocess) {
-//            if(!p.isExist)
-//                continue;
-//            if (pr == null || p.remainingTime < pr.remainingTime) {
-//                System.out.println(pr);
-//                pr = p;
-//                System.out.println(pr);
-//            }
-//        }
-//        return pr;
-//    }
+ 
     Process getSRT() {
         Process shortestRemaining = null;
 
