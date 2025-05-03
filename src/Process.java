@@ -25,8 +25,6 @@ public class Process extends JPanel {
 
         this.id = ++counter;  // assign then increment counter
         
-        
-        
         this.arraivaltime = arraivaltime;
         this.burstTime = burstTime;
         this.remainingTime = burstTime;
@@ -37,11 +35,12 @@ public class Process extends JPanel {
         }else{
             this.state = "Arrived";
         }
-        this.updateProcessUI(this);
+        System.out.println(this.updateProcessUI(this));
         lname.setText("P" + this.id);
         lstate.setText(state);
         add(lname);
         add(lstate);
+        
     }
 
     
@@ -49,12 +48,20 @@ public class Process extends JPanel {
     public void setLstate(String lstate,int time) {
         time++;
         if (this.state.equals("Finished")) return; // prevent re-setting if already finished
+        
         this.state = lstate;
-        if (lstate.equals("Finished")) {
+        
+        if (lstate.equals("Finished")) 
+        {
             if (time2Die == -1) time2Die = time;
+            
             this.lstate.setText(lstate + " at time " + time2Die);
+            
             System.out.println(this.lstate.getText());
-        } else {
+            
+        } 
+        else 
+        {
             this.lstate.setText(lstate);
         }
         this.updateProcessUI(this);
@@ -68,27 +75,34 @@ public class Process extends JPanel {
     
     
     //to change process color
-    public void updateProcessUI(Process p) {
+    public String updateProcessUI(Process p) {
+        String col="";
         switch (p.state) {
             case "Finished":
                 p.setBackground(java.awt.Color.GREEN);
+                col="green";
                 break;
             case "Running":
                 p.setBackground(java.awt.Color.YELLOW);
+                col="yellow";
                 break;
             case "Interrupt":
                 p.setBackground(java.awt.Color.ORANGE);
+                col="orange";
                 break;
             case "Arrived":
                 p.setBackground(java.awt.Color.BLUE);
+                col="blue";
                 break;
             case "Not Arrived":
                 p.setBackground(java.awt.Color.RED);
+                col="red";
                 break;
             default:
                 p.setBackground(java.awt.Color.LIGHT_GRAY);
         }
         p.setOpaque(true);
+        return col;
     }
 
     @Override

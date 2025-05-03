@@ -226,6 +226,7 @@ public class Main extends javax.swing.JFrame {
     
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        resetTime();
         if(arr.getText().trim().isEmpty() || brst.getText().trim().isEmpty() )
         {
             JOptionPane.showMessageDialog(this, "All fields must be filled.");
@@ -279,18 +280,24 @@ public class Main extends javax.swing.JFrame {
         time.setText("Time: 0");
         play = false;
         timerbtn.setText("   ▶️");
-        
-        Process.counter=0;
-        for (Process p : Totalprocess) {
-            int b=p.burstTime;
-            int a=p.arraivaltime;
-            p=new Process(a, b);            
-            colorize(null);
+
+        Process.counter = 0;
+        jPanel2.removeAll(); // clear UI
+
+        for (int i = 0; i < Totalprocess.size(); i++) {
+            Process old = Totalprocess.get(i);
+            Process fresh = new Process(old.arraivaltime, old.burstTime);
+            Totalprocess.set(i, fresh);
+            jPanel2.add(fresh);
+            System.out.println(fresh);
         }
 
         jPanel2.revalidate();
         jPanel2.repaint();
     }
+
+    
+
 
     int timeParse(){
         String fullText = time.getText();  // Example: "Time: 5"
