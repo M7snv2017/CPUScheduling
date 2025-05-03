@@ -26,6 +26,7 @@ public class Main extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         arr = new javax.swing.JTextField();
         brst = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CPU Scheduling");
@@ -142,6 +143,8 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Burst Time");
 
+        jButton4.setText("Delete All Process");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -162,14 +165,20 @@ public class Main extends javax.swing.JFrame {
                         .addGap(120, 120, 120)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 146, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,51 +270,24 @@ public class Main extends javax.swing.JFrame {
     
     //functions
     void resetTime() {
-        // Stop the timer if it's running
         if (timer != null && timer.isRunning()) {
             timer.stop();
         }
 
-        // Reset time
         tim = 0;
         finishedProcess = 0;
         time.setText("Time: 0");
         play = false;
-        timerbtn.setText("   ▶️"); // Reset play button icon
+        timerbtn.setText("   ▶️");
         
-        Process.counter = 0;
-        
-        // Reset each process
+        Process.counter=0;
         for (Process p : Totalprocess) {
-//            p.time2Die = -1;
-//            p.remainingTime = p.burstTime; // Assuming bursttime is the original full time
-//            if (p.arraivaltime > 0) {
-//                p.setLstate("Not Arrived");
-//
-//            } else {
-//                p.setLstate("Arrived");
-//            }
-
             int b=p.burstTime;
             int a=p.arraivaltime;
-            p=new Process(a, b);
-            Process cp=null;
-            
-            
-            if (p.arraivaltime > tim) {
-                p.setLstate("Not Arrived");
-            }else if(p.arraivaltime==tim){
-                p.setLstate("Arrived");
-            }else if (p.time2Die <=tim && p.time2Die !=-1) {
-                p.setLstate("Finished");
-            } else if (p == cp) {
-                p.setLstate("Running");
-            } else if(p.remainingTime != p.burstTime){
-                p.setLstate("Interrupted");
-            }
+            p=new Process(a, b);            
+            colorize(null);
         }
 
-        // Optionally: Refresh the panel if needed
         jPanel2.revalidate();
         jPanel2.repaint();
     }
@@ -328,7 +310,7 @@ public class Main extends javax.swing.JFrame {
 
         for (Process p : Totalprocess) {
             if (p.arraivaltime <= tim) {
-                p.setLstate("Arrived");
+                p.setLstate("Arrived",tim);
 
                 // Restore or recompute remainingTime manually
                 int executedTime = tim - p.arraivaltime;
@@ -339,7 +321,7 @@ public class Main extends javax.swing.JFrame {
                     p.isExist=true;
                 }
             } else {
-                p.setLstate("Not Arrived");
+                p.setLstate("Not Arrived",tim);
                 p.remainingTime = p.burstTime;
             }
         }
@@ -368,8 +350,8 @@ public class Main extends javax.swing.JFrame {
 //                p.time2Die=tim;
 //                Curprocess.remove(p);
 //            }
-            if (p.remainingTime <= 0 && !p.getLstate().equals("Finished")) { 
-                p.setLstate("Finished");
+            if (p.remainingTime == 0 && !p.getLstate().equals("Finished")) { 
+                p.setLstate("Finished",tim);
                 p.time2Die = tim;
                 finishedProcess++;
                 p.isExist=false;
@@ -377,7 +359,7 @@ public class Main extends javax.swing.JFrame {
         }
         
         time.setText("Time: " + ++tim);
-        Checkstate();
+        colorize(p);
         
         //debug
 //        System.out.println("Time: "+tim);
@@ -418,6 +400,7 @@ public class Main extends javax.swing.JFrame {
 //        }
 //        return cp;
 //    }
+    
 Process Checkstate() {
     Process cp = null;
     switch(algori.getSelectedIndex()) {
@@ -425,23 +408,26 @@ Process Checkstate() {
         case 1: cp = getSJF(); break;
         case 2: cp = getSRT(); break;  // Now uses the corrected SRT
     }
-    
+    return colorize(cp);
+}
+Process colorize(Process cp)
+{
     // Update process states
     for (Process p : Totalprocess) {
         if (p.time2Die != -1 && p.time2Die <= tim) {
-            p.setLstate("Finished");
+            p.setLstate("Finished",tim);
         } 
         else if (p == cp) {
-            p.setLstate("Running");
+            p.setLstate("Running",tim);
         } 
         else if (p.arraivaltime > tim) {
-            p.setLstate("Not Arrived");
+            p.setLstate("Not Arrived",tim);
         } 
         else if (p.remainingTime != p.burstTime) {
-            p.setLstate("Interrupted");
+            p.setLstate("Interrupted",tim);
         }
         else if (p.arraivaltime <= tim) {
-            p.setLstate("Arrived");
+            p.setLstate("Arrived",tim);
         }
     }
     
@@ -574,6 +560,7 @@ Process Checkstate() {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;

@@ -23,7 +23,7 @@ public class Process extends JPanel {
         setSize(150, 150);
         setLayout(new FlowLayout());
 
-        this.id = counter++;  // assign then increment counter
+        this.id = ++counter;  // assign then increment counter
         
         
         
@@ -46,11 +46,20 @@ public class Process extends JPanel {
 
     
     //to control the process state then change process color
-    public void setLstate(String lstate) {
-        this.state=lstate;
-        this.lstate.setText(lstate);
+    public void setLstate(String lstate,int time) {
+        time++;
+        if (this.state.equals("Finished")) return; // prevent re-setting if already finished
+        this.state = lstate;
+        if (lstate.equals("Finished")) {
+            if (time2Die == -1) time2Die = time;
+            this.lstate.setText(lstate + " at time " + time2Die);
+            System.out.println(this.lstate.getText());
+        } else {
+            this.lstate.setText(lstate);
+        }
         this.updateProcessUI(this);
     }
+
 
     public String getLstate() {
         return state;
@@ -80,7 +89,6 @@ public class Process extends JPanel {
                 p.setBackground(java.awt.Color.LIGHT_GRAY);
         }
         p.setOpaque(true);
-        p.lstate.setText(p.state);
     }
 
     @Override
