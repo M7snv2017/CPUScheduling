@@ -16,17 +16,20 @@ public class Main extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         time = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        timerbtn = new javax.swing.JButton();
-        algori = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        timerbtn1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        algori = new javax.swing.JComboBox<>();
+        timerbtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        avgr = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         arr = new javax.swing.JTextField();
         brst = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        avgw = new javax.swing.JLabel();
+        avgt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CPU Scheduling");
@@ -46,12 +49,23 @@ public class Main extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 208, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Choose Algorithm");
+
+        timerbtn1.setText("🔄️");
+        timerbtn1.setBorder(javax.swing.BorderFactory.createCompoundBorder());
+        timerbtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timerbtn1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("+");
         jButton2.setBorder(javax.swing.BorderFactory.createCompoundBorder());
@@ -61,11 +75,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("-");
-        jButton3.setBorder(javax.swing.BorderFactory.createCompoundBorder());
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        algori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "SJF", "SRT" }));
+        algori.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                algoriActionPerformed(evt);
             }
         });
 
@@ -77,57 +90,48 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        algori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "SJF", "SRT" }));
-        algori.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                algoriActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Choose Algorithm");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(138, 138, 138)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(timerbtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(time, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, 0)
-                        .addComponent(timerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(algori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(timerbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(algori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 9, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(timerbtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(algori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(56, 56, 56)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(timerbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(34, 34, 34)
+                        .addComponent(algori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(time, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(timerbtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel4)))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         jButton1.setText("Add Process");
@@ -137,39 +141,63 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Arraival Time");
+        avgr.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        avgr.setText("Avg Response Time:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Burst Time");
 
         jButton4.setText("Delete All Process");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel3.setText("Arraival Time");
+
+        avgw.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        avgw.setText("Avg Waiting Time:");
+
+        avgt.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        avgt.setText("Avg Turnaround Time:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(237, 237, 237)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(56, 56, 56)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(120, 120, 120)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(217, 217, 217)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jLabel2)
+                                        .addGap(56, 56, 56))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(45, 45, 45)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(avgt)
+                            .addComponent(avgr)
+                            .addComponent(avgw))
+                        .addGap(182, 182, 182))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,17 +207,25 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(72, 72, 72)
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(arr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(brst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(avgw)
+                        .addGap(8, 8, 8)
+                        .addComponent(avgt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(avgr)))
+                .addGap(52, 52, 52)
                 .addComponent(jButton1)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         pack();
@@ -201,7 +237,8 @@ public class Main extends javax.swing.JFrame {
     Timer timer;
     int finishedProcess=0;
     List<Process> Totalprocess = new ArrayList<>();
-
+    
+    Process running= null;
     boolean play=false;
     
     public Main() {
@@ -220,7 +257,21 @@ public class Main extends javax.swing.JFrame {
                 increasingTime();
             }
         });
-
+        Totalprocess.add(new Process(0, 10));
+        Totalprocess.add(new Process(2, 4));
+        Totalprocess.add(new Process(4, 8));
+        Totalprocess.add(new Process(6, 2));
+        Totalprocess.add(new Process(10, 12));
+        Totalprocess.add(new Process(14, 6));
+        Totalprocess.add(new Process(18, 2));
+        resetTime();
+        
+        avgw.setVisible(false);
+        avgt.setVisible(false);
+        avgr.setVisible(false);
+        
+        jPanel2.revalidate();
+        jPanel2.repaint();
     }
     
     
@@ -245,10 +296,6 @@ public class Main extends javax.swing.JFrame {
         increasingTime();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        decreasingTime();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void timerbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timerbtnActionPerformed
         play=!play;
         tim=timeParse();
@@ -265,16 +312,39 @@ public class Main extends javax.swing.JFrame {
         resetTime();
     }//GEN-LAST:event_algoriActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Totalprocess.removeAll(Totalprocess);
+        resetTime();
+        jPanel2.revalidate();
+        jPanel2.repaint();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void timerbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timerbtn1ActionPerformed
+        resetTime();
+    }//GEN-LAST:event_timerbtn1ActionPerformed
+
     
     
-    
-    
+
+
+
     //functions
+
+    
+    int timeParse(){
+        String fullText = time.getText();  // Example: "Time: 5"
+        String numberPart = fullText.substring(6);  // Skips "Time: " (6 characters)
+        return Integer.parseInt(numberPart);
+    }
+    
     void resetTime() {
         if (timer != null && timer.isRunning()) {
             timer.stop();
         }
-
+        avgw.setText("Avg Waiting Time:");
+        avgt.setText("Avg Turnaround Time:");
+        avgr.setText("Avg Response Time:");
+        
         tim = 0;
         finishedProcess = 0;
         time.setText("Time: 0");
@@ -289,92 +359,77 @@ public class Main extends javax.swing.JFrame {
             Process fresh = new Process(old.arraivaltime, old.burstTime);
             Totalprocess.set(i, fresh);
             jPanel2.add(fresh);
-            System.out.println(fresh);
         }
 
         jPanel2.revalidate();
         jPanel2.repaint();
     }
-
     
-
-
-    int timeParse(){
-        String fullText = time.getText();  // Example: "Time: 5"
-        String numberPart = fullText.substring(6);  // Skips "Time: " (6 characters)
-        return Integer.parseInt(numberPart);
-    }
-    
-    
-    void decreasingTime() {
-        if (tim <= 0) return;
-        
-        
-        tim--;
-        time.setText("Time: " + tim);
-
-        finishedProcess = 0;
-
-        for (Process p : Totalprocess) {
-            if (p.arraivaltime <= tim) {
-                p.setLstate("Arrived",tim);
-
-                // Restore or recompute remainingTime manually
-                int executedTime = tim - p.arraivaltime;
-                if (executedTime >= p.burstTime) {
-                    p.remainingTime = 0;
-                } else {
-                    p.remainingTime = p.burstTime - executedTime;
-                    p.isExist=true;
-                }
-            } else {
-                p.setLstate("Not Arrived",tim);
-                p.remainingTime = p.burstTime;
-            }
-        }
-
-        Checkstate(); // Just to update labels
-    }
-
     void increasingTime(){
+        if (finishedProcess == Process.counter) {
+            timer.stop();
+            
+            play = false;
+            timerbtn.setText("   ▶️");
+            
+            JOptionPane.showMessageDialog(this, "All processes finished");
+            
+            
+            //get the avrage of three things
+            // here we must show waiting tim and its friends
+            return ;
+        }
+        Process p=updatingTime();
+        time.setText("Time: " + ++tim);
+        if(p!=null)
+        {
+            colorize(p);
+        }
+    }
+    
+    Process updatingTime(){
 
         Process p = Checkstate();
         
-        if (finishedProcess == Process.counter) {
-            timer.stop();
-            JOptionPane.showMessageDialog(this, "All processes finished!");
-            play = false;
-            timerbtn.setText("   ▶️");
-            return;
-        }
+        colorize(p);
         if (p != null) 
         {   
-            
             p.remainingTime--;
-            
-//            if (p.remainingTime == 0) {
-//                finishedProcess++;
-//                p.time2Die=tim;
-//                Curprocess.remove(p);
-//            }
             if (p.remainingTime == 0 && !p.getLstate().equals("Finished")) { 
                 p.setLstate("Finished",tim);
-                p.time2Die = tim;
+                p.time2Die = tim+1;
                 finishedProcess++;
                 p.isExist=false;
             }
         }
+        if(finishedProcess == Process.counter)
+        {
+            findWTR();
+        }
+        return p;
         
-        time.setText("Time: " + ++tim);
-        colorize(p);
-        
-        //debug
-//        System.out.println("Time: "+tim);
-//        for (Process pr : Curprocess) {
-//            System.out.println(pr);
-//        }
     }
     
+    void findWTR() {
+        float w=0,t=0,r=0,cont=0;
+        for(Process p : Totalprocess)
+        {
+            cont++;
+            w+=p.waitingTime;
+            t+=p.turnaroundTime;
+            r+=p.responseTime;
+        }
+        avgw.setText(avgw.getText() + " " + String.format("%.2f", w / cont));
+        avgt.setText(avgt.getText() + " " + String.format("%.2f", t / cont));
+        avgr.setText(avgr.getText() + " " + String.format("%.2f", r / cont));
+
+        avgw.setVisible(true);
+        avgt.setVisible(true);
+        avgr.setVisible(true);
+        
+        jPanel2.revalidate();
+        jPanel2.repaint();
+    }
 
     Process Checkstate() {
         Process cp = null;
@@ -383,9 +438,10 @@ public class Main extends javax.swing.JFrame {
             case 1: cp = getSJF(); break;
             case 2: cp = getSRT(); break;  // Now uses the corrected SRT
         }
-        return colorize(cp);
+        return cp;
     }
-    Process colorize(Process cp){
+    
+    void colorize(Process cp){
     // Update process states
     for (Process p : Totalprocess) {
         if (p.time2Die != -1 && p.time2Die <= tim) {
@@ -393,20 +449,23 @@ public class Main extends javax.swing.JFrame {
         } 
         else if (p == cp) {
             p.setLstate("Running",tim);
+            running=p;
         } 
         else if (p.arraivaltime > tim) {
             p.setLstate("Not Arrived",tim);
         } 
         else if (p.remainingTime != p.burstTime) {
             p.setLstate("Interrupted",tim);
+            
         }
         else if (p.arraivaltime <= tim) {
             p.setLstate("Arrived",tim);
+            
         }
     }
     
-    return cp;
 }
+    
     
     //algorithms
     Process getFCFS(){
@@ -453,8 +512,7 @@ public class Main extends javax.swing.JFrame {
         // Only consider processes that have arrived and aren't finished
         for (Process p : Totalprocess) {
             if (p.arraivaltime <= tim &&          // Process has arrived
-                p.remainingTime > 0 &&            // Process isn't finished
-                p.getLstate() != "Finished") {     // Additional state check
+                p.remainingTime > 0 ) {     // Additional state check
 
                 if (shortestRemaining == null || 
                     p.remainingTime < shortestRemaining.remainingTime) {
@@ -465,11 +523,6 @@ public class Main extends javax.swing.JFrame {
 
         return shortestRemaining;
     }
-    
-    
-    
-    
-    
     
     
 
@@ -506,17 +559,20 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> algori;
     private javax.swing.JTextField arr;
+    private javax.swing.JLabel avgr;
+    private javax.swing.JLabel avgt;
+    private javax.swing.JLabel avgw;
     private javax.swing.JTextField brst;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     public javax.swing.JLabel time;
     private javax.swing.JButton timerbtn;
+    private javax.swing.JButton timerbtn1;
     // End of variables declaration//GEN-END:variables
 }
