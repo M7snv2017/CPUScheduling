@@ -1,4 +1,3 @@
-package secondcpu;
 
 
 import java.awt.FlowLayout;
@@ -314,19 +313,30 @@ public class Main extends javax.swing.JFrame {
     }                                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        increasingTime();
+        if(!Totalprocess.isEmpty())
+            increasingTime();
+        else{
+            JOptionPane.showMessageDialog(this,"Add process to increase time.");
+        }
     }                                        
 
     private void timerbtnActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        play=!play;
-        tim=timeParse();
-        if(play){
-            timer.start();
-            timerbtn.setText("  ️ ⏸️️");
-        }else{
-            timer.stop();
-            timerbtn.setText("   ▶️");
+        if(!Totalprocess.isEmpty())
+        {
+            play=!play;
+            tim=timeParse();
+            if(play){
+                timer.start();
+                timerbtn.setText("  ️ ⏸️️");
+            }else{
+                timer.stop();
+                timerbtn.setText("   ▶️");
+            }
         }
+        else{
+            JOptionPane.showMessageDialog(this,"Add process to start the time.");
+        }
+        
     }                                        
 
     private void algoriActionPerformed(java.awt.event.ActionEvent evt) {                                       

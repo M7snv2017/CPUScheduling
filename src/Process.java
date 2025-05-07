@@ -1,4 +1,3 @@
-package secondcpu;
 
 
 import java.awt.FlowLayout;
