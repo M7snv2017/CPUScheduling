@@ -12,47 +12,51 @@ public class Process extends JPanel {
     int arraivaltime;
     public int burstTime;
     
-    public int remainingTime;//how much time left
-    public int time2Die=-1;//the time of finish of the process
-    public boolean isExist=true;
+    public int remainingTime; // how much time left
+    public int time2Die = -1; // the time of finish of the process
+    public boolean isExist = true;
     JLabel lname = new JLabel();
     private JLabel lstate = new JLabel();
-    JLabel W= new JLabel();
-    JLabel T= new JLabel();
-    JLabel R= new JLabel();
+    JLabel W = new JLabel();
+    JLabel T = new JLabel();
+    JLabel R = new JLabel();
     
+    int waitingTime = 0;
+    int responseTime = -1;
+    int turnaroundTime = 0;
     
-    int waitingTime=0;
-    int responseTime=-1;
-    int turnaroundTime=0;
+    Main m;
     
-    public Process(int arraivaltime, int burstTime) {
+    public Process(int arraivaltime, int burstTime, Main m) {
         setSize(150, 150);
         setLayout(new FlowLayout());
-
+        this.m = m;
         this.id = ++counter;  // assign then increment counter
         
         this.arraivaltime = arraivaltime;
         this.burstTime = burstTime;
         this.remainingTime = burstTime;
         
-        if(this.arraivaltime>0)
-        {
+        if (this.arraivaltime > 0) {
             this.state = "Not Arrived";
-        }else{
+        } else {
             this.state = "Arrived";
         }
+        
+        Process p = m.Checkstate(this);
+        
+        if (this == p) {
+            state="Running";
+            responseTime=0;
+            System.err.println(this);
+        }
+        
         this.updateProcessUI(this);
         lname.setText("P" + this.id);
         lstate.setText(state);
         
-        
-        
-        
         add(lname);
         add(lstate);
-        
-        
         
         Timer clickTimer = new Timer(250, null); // 250ms delay
         clickTimer.setRepeats(false); // Run only once
@@ -65,7 +69,7 @@ public class Process extends JPanel {
                     clickTimer.stop();
                     clickTimer.setInitialDelay(250);
                     clickTimer.addActionListener(evt -> {
-                        
+                        // Single click action here if needed
                     });
                     clickTimer.start();
                 } else if (e.getClickCount() == 2) {
@@ -77,11 +81,9 @@ public class Process extends JPanel {
             }
         });
     }
-
     
-    //to control the process state then change process color
+    
     public void setLstate(String lstate,int time) {
-        time++;
         if (this.state.equals("Finished")) return; // prevent re-setting if already finished
         
         this.state = lstate;
@@ -118,34 +120,11 @@ public class Process extends JPanel {
 //            System.out.println(responseTime+"="+time+" - "+arraivaltime);
             
         }
-
-
-    }
-    public void setLstate(int time, String lstate) {
-        
-
-
-
-        
-        this.state = lstate;
-        this.lstate.setText(lstate);
-        this.updateProcessUI(this);
-
-        if(state!="Finished" && state!="Not Arrived" && state=="Running" && responseTime==-1)
-        {
-            
-            time--;
-            responseTime=time-arraivaltime;
-//            System.out.println(responseTime+"="+time+" - "+arraivaltime);
-            
         }
-
-
-    }
-
+    
     public String getLstate() {
-        return state;
-    }
+            return state;
+        }
     
     
     

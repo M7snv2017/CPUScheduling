@@ -257,18 +257,33 @@ public class Main extends javax.swing.JFrame {
                 increasingTime();
             }
         });
-        Totalprocess.add(new Process(0, 10));
-        Totalprocess.add(new Process(2, 4));
-        Totalprocess.add(new Process(4, 8));
-        Totalprocess.add(new Process(6, 2));
-        Totalprocess.add(new Process(10, 12));
-        Totalprocess.add(new Process(14, 6));
-        Totalprocess.add(new Process(18, 2));
-        resetTime();
+        Process p=new Process(0, 10,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        p=new Process(2, 4,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        p=new Process(4, 8,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        p=new Process(6, 2,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        p=new Process(10, 12,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        p=new Process(14, 6,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        p=new Process(18, 2,this);
+        Totalprocess.add(p);jPanel2.add(p);
+        
+        System.err.println("stop");
         
         avgw.setVisible(false);
         avgt.setVisible(false);
         avgr.setVisible(false);
+        
         
         jPanel2.revalidate();
         jPanel2.repaint();
@@ -284,7 +299,9 @@ public class Main extends javax.swing.JFrame {
         }
         else if(Process.counter<33)
         {
-            Process p=new Process(Integer.parseInt( arr.getText()), Integer.parseInt(brst.getText()));
+            Process p=new Process( 
+                    Integer.parseInt( arr.getText()),
+                    Integer.parseInt(brst.getText()),this);
             Totalprocess.add(p);
             jPanel2.add(p);
             jPanel2.revalidate();
@@ -328,9 +345,8 @@ public class Main extends javax.swing.JFrame {
 
 
 
-    //functions
+//functions
 
-    
     int timeParse(){
         String fullText = time.getText();  // Example: "Time: 5"
         String numberPart = fullText.substring(6);  // Skips "Time: " (6 characters)
@@ -338,86 +354,103 @@ public class Main extends javax.swing.JFrame {
     }
     
     void resetTime() {
-        if (timer != null && timer.isRunning()) {
-            timer.stop();
-        }
-        avgw.setText("Avg Waiting Time:");
-        avgt.setText("Avg Turnaround Time:");
-        avgr.setText("Avg Response Time:");
-        
-        tim = 0;
-        finishedProcess = 0;
-        time.setText("Time: 0");
-        play = false;
-        timerbtn.setText("   ▶️");
-
-        Process.counter = 0;
-        jPanel2.removeAll(); // clear UI
-
-        for (int i = 0; i < Totalprocess.size(); i++) {
-            Process old = Totalprocess.get(i);
-            Process fresh = new Process(old.arraivaltime, old.burstTime);
-            Totalprocess.set(i, fresh);
-            jPanel2.add(fresh);
-        }
-
-        jPanel2.revalidate();
-        jPanel2.repaint();
+    if (timer != null && timer.isRunning()) {
+        timer.stop();
     }
+    avgw.setText("Avg Waiting Time:");
+    avgt.setText("Avg Turnaround Time:");
+    avgr.setText("Avg Response Time:");
     
-    void increasingTime(){
+    avgw.setVisible(false);
+    avgt.setVisible(false);
+    avgr.setVisible(false);
+    
+    tim = 0;
+    finishedProcess = 0;
+    time.setText("Time: 0");
+    play = false;
+    timerbtn.setText("   ▶️");
+    running = null; // Reset the running process
+
+    Process.counter = 0;
+    jPanel2.removeAll(); // clear UI
+
+    for (int i = 0; i < Totalprocess.size(); i++) {
+        Process old = Totalprocess.get(i);
+        Process fresh = new Process(old.arraivaltime, old.burstTime, this);
+        Totalprocess.set(i, fresh);
+        jPanel2.add(fresh);
+    }
+
+    jPanel2.revalidate();
+    jPanel2.repaint();
+}
+
+    void increasingTime() {
         if (finishedProcess == Process.counter) {
             timer.stop();
-            
+
             play = false;
             timerbtn.setText("   ▶️");
-            
-            JOptionPane.showMessageDialog(this, "All processes finished");
-            
-            
-            //get the avrage of three things
-            // here we must show waiting tim and its friends
-            return ;
-        }
-        Process p=updatingTime();
-        time.setText("Time: " + ++tim);
-        if(p!=null)
-        {
-            colorize(p);
-        }
-    }
-    
-    Process updatingTime(){
 
-        Process p = Checkstate();
+            JOptionPane.showMessageDialog(this, "All processes finished");
+
+            return;
+        }
+        time.setText("Time: " + ++tim);
+        Process p = updatingTime();
+    }
+
+    Process updatingTime() {
         
+//        Process p = Checkstate();
+//        
+//        colorize(p);
+//        if (p != null) 
+//        {   
+//            p.remainingTime--;
+//            if (p.remainingTime == 0 && !p.getLstate().equals("Finished")) { 
+//                p.setLstate("Finished",tim);
+//                p.time2Die = tim+1;
+//                finishedProcess++;
+//                p.isExist=false;
+//            }
+//        }
+//        if(finishedProcess == Process.counter)
+//        {
+//            findWTR();
+//        }
+//        return p;
+        
+        System.out.println("Time: " + tim);
+        Process p = Checkstate();
+
         colorize(p);
+
         if (p != null) 
         {   
             p.remainingTime--;
             if (p.remainingTime == 0 && !p.getLstate().equals("Finished")) { 
                 p.setLstate("Finished",tim);
-                p.time2Die = tim+1;
+                p.time2Die = tim;
                 finishedProcess++;
                 p.isExist=false;
             }
         }
-        if(finishedProcess == Process.counter)
-        {
+        
+        if (finishedProcess == Process.counter) {
             findWTR();
         }
         return p;
-        
     }
-    
+
     void findWTR() {
-        float w=0,t=0,r=0,cont=0;
-        for(Process p : Totalprocess)
-        {
+        float w = 0, t = 0, r = 0, cont = 0;
+        for (Process p : Totalprocess) {
             cont++;
-            w+=p.waitingTime;
-            t+=p.turnaroundTime;
-            r+=p.responseTime;
+            w += p.waitingTime;
+            t += p.turnaroundTime;
+            r += p.responseTime;
         }
         avgw.setText(avgw.getText() + " " + String.format("%.2f", w / cont));
         avgt.setText(avgt.getText() + " " + String.format("%.2f", t / cont));
@@ -426,48 +459,73 @@ public class Main extends javax.swing.JFrame {
         avgw.setVisible(true);
         avgt.setVisible(true);
         avgr.setVisible(true);
-        
+
         jPanel2.revalidate();
         jPanel2.repaint();
     }
-
+    
     Process Checkstate() {
+        System.err.println("Without:");
         Process cp = null;
-        switch(algori.getSelectedIndex()) {
+        switch (algori.getSelectedIndex()) {
             case 0: cp = getFCFS(); break;
             case 1: cp = getSJF(); break;
-            case 2: cp = getSRT(); break;  // Now uses the corrected SRT
+            case 2: cp = getSRT(); break;
         }
         return cp;
     }
     
+    Process Checkstate(Process p) {
+        Process cp = p;
+        switch (algori.getSelectedIndex()) {
+            case 0: {
+                Process pr = getFCFS();
+                if (pr != null)
+                    cp = pr; 
+                break;
+            }
+            case 1: {
+                Process pr = getSJF(); 
+                if (pr != null)
+                    cp = pr;
+                break;
+            }
+            case 2: {
+                Process pr = getSRT(); 
+                if (pr != null)
+                    cp = pr;
+                break;
+            }
+        }
+        return cp;
+    }
+
     void colorize(Process cp){
-    // Update process states
-    for (Process p : Totalprocess) {
-        if (p.time2Die != -1 && p.time2Die <= tim) {
-            p.setLstate("Finished",tim);
-        } 
-        else if (p == cp) {
-            p.setLstate("Running",tim);
-            running=p;
-        } 
-        else if (p.arraivaltime > tim) {
-            p.setLstate("Not Arrived",tim);
-        } 
-        else if (p.remainingTime != p.burstTime) {
-            p.setLstate("Interrupted",tim);
-            
+        // Update process states
+        for (Process p : Totalprocess) {
+            if (p.time2Die != -1 && p.time2Die <= tim) {
+                p.setLstate("Finished",tim);
+            } 
+            else if (p == cp) {
+                p.setLstate("Running",tim);
+                running=p;
+            } 
+            else if (p.arraivaltime > tim) {
+                p.setLstate("Not Arrived",tim);
+            } 
+            else if (p.remainingTime != p.burstTime) {
+                p.setLstate("Interrupted",tim);
+
+            }
+            else if (p.arraivaltime <= tim) {
+                p.setLstate("Arrived",tim);
+
+            }
         }
-        else if (p.arraivaltime <= tim) {
-            p.setLstate("Arrived",tim);
-            
-        }
+
     }
     
-}
-    
-    
-    //algorithms
+     //algorithms
     Process getFCFS(){
         Process pr=null;
         int i=0;
@@ -523,6 +581,7 @@ public class Main extends javax.swing.JFrame {
 
         return shortestRemaining;
     }
+    
     
     
 
