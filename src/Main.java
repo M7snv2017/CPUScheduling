@@ -1,3 +1,5 @@
+package secondcpu;
+
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -10,7 +12,7 @@ import javax.swing.JOptionPane;
 public class Main extends javax.swing.JFrame {
 
     
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -229,7 +231,7 @@ public class Main extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
     
     
     //public variables
@@ -238,12 +240,15 @@ public class Main extends javax.swing.JFrame {
     int finishedProcess=0;
     List<Process> Totalprocess = new ArrayList<>();
     
-    Process running= null;
+    Process running= null,finished= null;
+    
     boolean play=false;
     
     public Main() {
         initComponents();
+//        jPanel2.setLayout(new FlowLayout());
         jPanel2.setSize(476, 208);
+//        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
         jPanel2.setLayout(new java.awt.GridLayout(8, 4, 10, 10));
         time.setText("Time: "+tim);
         
@@ -288,29 +293,31 @@ public class Main extends javax.swing.JFrame {
     
     
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         resetTime();
         if(arr.getText().trim().isEmpty() || brst.getText().trim().isEmpty() )
         {
             JOptionPane.showMessageDialog(this, "All fields must be filled.");
         }
+        else if(Integer.parseInt( arr.getText())<0 ||Integer.parseInt(brst.getText())<0)
+        {
+            JOptionPane.showMessageDialog(this, "All Fields must be 0 or more.");
+        }
         else if(Process.counter<33)
         {
-            Process p=new Process( 
-                    Integer.parseInt( arr.getText()),
-                    Integer.parseInt(brst.getText()),this);
+            Process p=new Process( Integer.parseInt( arr.getText()), Integer.parseInt(brst.getText()),this);
             Totalprocess.add(p);
             jPanel2.add(p);
             jPanel2.revalidate();
             jPanel2.repaint();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }                                        
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         increasingTime();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }                                        
 
-    private void timerbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timerbtnActionPerformed
+    private void timerbtnActionPerformed(java.awt.event.ActionEvent evt) {                                         
         play=!play;
         tim=timeParse();
         if(play){
@@ -320,68 +327,67 @@ public class Main extends javax.swing.JFrame {
             timer.stop();
             timerbtn.setText("   ▶️");
         }
-    }//GEN-LAST:event_timerbtnActionPerformed
+    }                                        
 
-    private void algoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algoriActionPerformed
+    private void algoriActionPerformed(java.awt.event.ActionEvent evt) {                                       
         resetTime();
-    }//GEN-LAST:event_algoriActionPerformed
+    }                                      
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         Totalprocess.removeAll(Totalprocess);
         resetTime();
         jPanel2.revalidate();
         jPanel2.repaint();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }                                        
 
-    private void timerbtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timerbtn1ActionPerformed
+    private void timerbtn1ActionPerformed(java.awt.event.ActionEvent evt) {                                          
         resetTime();
-    }//GEN-LAST:event_timerbtn1ActionPerformed
+    }                                         
 
     
-    
-
-
-
-//functions
+    //functions
 
     int timeParse(){
-        String fullText = time.getText();  
-        String numberPart = fullText.substring(6);  
+        String fullText = time.getText();  // Example: "Time: 5"
+        String numberPart = fullText.substring(6);  // Skips "Time: " (6 characters)
         return Integer.parseInt(numberPart);
     }
     
     void resetTime() {
-    if (timer != null && timer.isRunning()) {
-        timer.stop();
+        System.out.println("secondcpu.Main.resetTime()");
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
+        avgw.setText("Avg Waiting Time:");
+        avgt.setText("Avg Turnaround Time:");
+        avgr.setText("Avg Response Time:");
+
+        avgw.setVisible(false);
+        avgt.setVisible(false);
+        avgr.setVisible(false);
+
+        tim = 0;
+        finishedProcess = 0;
+        time.setText("Time: 0");
+        play = false;
+        timerbtn.setText("   ▶️");
+        running = null; // Reset the running process
+
+        Process.counter = 0;
+        jPanel2.removeAll(); // clear UI
+
+        for (int i = 0; i < Totalprocess.size(); i++) {
+            Process old = Totalprocess.get(i);
+            Process fresh = new Process(old.arraivaltime, old.burstTime, this);
+            Totalprocess.set(i, fresh);
+            jPanel2.add(fresh);
+            colorize(Checkstate());
+        }
+        
+        
+        jPanel2.revalidate();
+        jPanel2.repaint();
     }
-    avgw.setText("Avg Waiting Time:");
-    avgt.setText("Avg Turnaround Time:");
-    avgr.setText("Avg Response Time:");
-    
-    avgw.setVisible(false);
-    avgt.setVisible(false);
-    avgr.setVisible(false);
-    
-    tim = 0;
-    finishedProcess = 0;
-    time.setText("Time: 0");
-    play = false;
-    timerbtn.setText("   ▶️");
-    running = null; 
-
-    Process.counter = 0;
-    jPanel2.removeAll(); 
-
-    for (int i = 0; i < Totalprocess.size(); i++) {
-        Process old = Totalprocess.get(i);
-        Process fresh = new Process(old.arraivaltime, old.burstTime, this);
-        Totalprocess.set(i, fresh);
-        jPanel2.add(fresh);
-    }
-
-    jPanel2.revalidate();
-    jPanel2.repaint();
-}
 
     void increasingTime() {
         if (finishedProcess == Process.counter) {
@@ -399,26 +405,29 @@ public class Main extends javax.swing.JFrame {
     }
 
     Process updatingTime() {
-        
-        
-        System.out.println("Time: " + tim);
-        Process p = Checkstate();
 
+        Process p = Checkstate();
         colorize(p);
 
         if (p != null) 
         {   
             p.remainingTime--;
+            
             if (p.remainingTime == 0 && !p.getLstate().equals("Finished")) { 
                 p.setLstate("Finished",tim);
                 p.time2Die = tim;
                 finishedProcess++;
                 p.isExist=false;
+                running=Checkstate();
+                if(running!=null)
+                    running.setLstate("Running", tim);
             }
         }
         
         if (finishedProcess == Process.counter) {
             findWTR();
+        }
+        else{
         }
         return p;
     }
@@ -442,9 +451,8 @@ public class Main extends javax.swing.JFrame {
         jPanel2.revalidate();
         jPanel2.repaint();
     }
-    
+
     Process Checkstate() {
-        System.err.println("Without:");
         Process cp = null;
         switch (algori.getSelectedIndex()) {
             case 0: cp = getFCFS(); break;
@@ -476,6 +484,7 @@ public class Main extends javax.swing.JFrame {
                 break;
             }
         }
+        System.err.println("return " +cp);
         return cp;
     }
 
@@ -523,12 +532,15 @@ public class Main extends javax.swing.JFrame {
     Process getSJF() {
         Process shortest = null;
 
+        // First check if there's a currently running process
         for (Process p : Totalprocess) {
             if (p.getLstate().equals("Running")) {
+                // In non-preemptive SJF, we should let the running process continue
                 return p;
             }
         }
 
+        // If no process is running, find the shortest job that has arrived
         for (Process p : Totalprocess) {
             if (p.arraivaltime <= tim && 
                 !p.getLstate().equals("Finished") && 
@@ -543,9 +555,10 @@ public class Main extends javax.swing.JFrame {
     Process getSRT() {
         Process shortestRemaining = null;
 
+        // Only consider processes that have arrived and aren't finished
         for (Process p : Totalprocess) {
-            if (p.arraivaltime <= tim && 
-                p.remainingTime > 0 ) { 
+            if (p.arraivaltime <= tim &&          // Process has arrived
+                p.remainingTime > 0 ) {     // Additional state check
 
                 if (shortestRemaining == null || 
                     p.remainingTime < shortestRemaining.remainingTime) {
@@ -558,8 +571,6 @@ public class Main extends javax.swing.JFrame {
     }
     
     
-    
-
     
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -590,7 +601,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     public javax.swing.JComboBox<String> algori;
     private javax.swing.JTextField arr;
     private javax.swing.JLabel avgr;
@@ -608,5 +619,5 @@ public class Main extends javax.swing.JFrame {
     public javax.swing.JLabel time;
     private javax.swing.JButton timerbtn;
     private javax.swing.JButton timerbtn1;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 }
