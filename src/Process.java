@@ -58,8 +58,8 @@ public class Process extends JPanel {
         add(lname);
         add(lstate);
         
-        Timer clickTimer = new Timer(250, null); // 250ms delay
-        clickTimer.setRepeats(false); // Run only once
+        Timer clickTimer = new Timer(250, null); 
+        clickTimer.setRepeats(false); 
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,7 +84,7 @@ public class Process extends JPanel {
     
     
     public void setLstate(String lstate,int time) {
-        if (this.state.equals("Finished")) return; // prevent re-setting if already finished
+        if (this.state.equals("Finished")) return; 
         
         this.state = lstate;
         
@@ -98,7 +98,7 @@ public class Process extends JPanel {
             
             System.out.println(this.lstate.getText());
             
-            edit();
+            waitingTime = time2Die-(arraivaltime+burstTime);
             W.setText("WaitingTime: "+waitingTime);
             T.setText("TurnaroundTime: "+turnaroundTime);
             R.setText("ResponseTime: "+responseTime);
@@ -117,50 +117,46 @@ public class Process extends JPanel {
             
             time--;
             responseTime=time-arraivaltime;
-//            System.out.println(responseTime+"="+time+" - "+arraivaltime);
             
         }
-        }
+    }
     
     public String getLstate() {
             return state;
         }
     
-    
-    
-    //to change process color
-    public void updateProcessUI(Process p) {
-        String col="";
-        switch (p.state) {
-            case "Finished":
-                p.setBackground(java.awt.Color.GREEN);
-                col="green";
-                break;
-            case "Running":
-                remov();
-                p.setBackground(java.awt.Color.YELLOW);
-                col="yellow";
-                break;
-            case "Interrupted":
-                remov();
-                p.setBackground(java.awt.Color.ORANGE);
-                col="orange";
-                break;
-            case "Arrived":
-                remov();
-                p.setBackground(java.awt.Color.BLUE);
-                col="blue";
-                break;
-            case "Not Arrived":
-                remov();
-                p.setBackground(java.awt.Color.RED);
-                col="red";
-                break;
-            default:
-                p.setBackground(java.awt.Color.LIGHT_GRAY);
+        public void updateProcessUI(Process p) {
+            String col="";
+            switch (p.state) {
+                case "Finished":
+                    p.setBackground(java.awt.Color.GREEN);
+                    col="green";
+                    break;
+                case "Running":
+                    remov();
+                    p.setBackground(java.awt.Color.YELLOW);
+                    col="yellow";
+                    break;
+                case "Interrupted":
+                    remov();
+                    p.setBackground(java.awt.Color.ORANGE);
+                    col="orange";
+                    break;
+                case "Arrived":
+                    remov();
+                    p.setBackground(java.awt.Color.BLUE);
+                    col="blue";
+                    break;
+                case "Not Arrived":
+                    remov();
+                    p.setBackground(java.awt.Color.RED);
+                    col="red";
+                    break;
+                default:
+                    p.setBackground(java.awt.Color.LIGHT_GRAY);
+            }
+            p.setOpaque(true);
         }
-        p.setOpaque(true);
-    }
 
     void remov(){
         this.remove(W);
@@ -168,11 +164,6 @@ public class Process extends JPanel {
         this.remove(T);
         this.revalidate();
         this.repaint();
-    }
-    void edit(){
-        
-        waitingTime = time2Die-(arraivaltime+burstTime);
-//        System.out.println(id+"- "+waitingTime+" = "+time2Die+" - "+arraivaltime+" + "+burstTime);
     }
     @Override
     public String toString() {
