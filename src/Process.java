@@ -1,3 +1,6 @@
+package secondcpu;
+
+
 import java.awt.FlowLayout;
 import javax.swing.*;
 import java.awt.event.*;
@@ -44,11 +47,19 @@ public class Process extends JPanel {
         }
         
         Process p = m.Checkstate(this);
-        
+        if(p==null)
+        {
+            System.out.println(this.id +" error it is null "+p.id );
+        }else
+        {
+            System.out.println("inside process "+p.id );
+        }
         if (this == p) {
+            
             state="Running";
             responseTime=0;
-            System.err.println(this);
+            System.err.println(this.id+" running");
+            
         }
         
         this.updateProcessUI(this);
@@ -58,8 +69,8 @@ public class Process extends JPanel {
         add(lname);
         add(lstate);
         
-        Timer clickTimer = new Timer(250, null); 
-        clickTimer.setRepeats(false); 
+        Timer clickTimer = new Timer(250, null); // 250ms delay
+        clickTimer.setRepeats(false); // Run only once
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,7 +95,7 @@ public class Process extends JPanel {
     
     
     public void setLstate(String lstate,int time) {
-        if (this.state.equals("Finished")) return; 
+        if (this.state.equals("Finished")) return; // prevent re-setting if already finished
         
         this.state = lstate;
         
@@ -92,7 +103,6 @@ public class Process extends JPanel {
         {
             if (time2Die == -1) time2Die = time;
             
-            this.lstate.setText(lstate + " at time " + time2Die);
             
             turnaroundTime=time-arraivaltime;
             
@@ -115,48 +125,53 @@ public class Process extends JPanel {
         if(state!="Finished" && state!="Not Arrived" && state=="Running" && responseTime==-1)
         {
             
-            time--;
             responseTime=time-arraivaltime;
+//            System.out.println(responseTime+"="+time+" - "+arraivaltime);
             
         }
+
+
     }
     
     public String getLstate() {
             return state;
         }
     
-        public void updateProcessUI(Process p) {
-            String col="";
-            switch (p.state) {
-                case "Finished":
-                    p.setBackground(java.awt.Color.GREEN);
-                    col="green";
-                    break;
-                case "Running":
-                    remov();
-                    p.setBackground(java.awt.Color.YELLOW);
-                    col="yellow";
-                    break;
-                case "Interrupted":
-                    remov();
-                    p.setBackground(java.awt.Color.ORANGE);
-                    col="orange";
-                    break;
-                case "Arrived":
-                    remov();
-                    p.setBackground(java.awt.Color.BLUE);
-                    col="blue";
-                    break;
-                case "Not Arrived":
-                    remov();
-                    p.setBackground(java.awt.Color.RED);
-                    col="red";
-                    break;
-                default:
-                    p.setBackground(java.awt.Color.LIGHT_GRAY);
-            }
-            p.setOpaque(true);
+    
+    
+    //to change process color
+    public void updateProcessUI(Process p) {
+        String col="";
+        switch (p.state) {
+            case "Finished":
+                p.setBackground(java.awt.Color.GREEN);
+                col="green";
+                break;
+            case "Running":
+                remov();
+                p.setBackground(java.awt.Color.YELLOW);
+                col="yellow";
+                break;
+            case "Interrupted":
+                remov();
+                p.setBackground(java.awt.Color.ORANGE);
+                col="orange";
+                break;
+            case "Arrived":
+                remov();
+                p.setBackground(java.awt.Color.BLUE);
+                col="blue";
+                break;
+            case "Not Arrived":
+                remov();
+                p.setBackground(java.awt.Color.RED);
+                col="red";
+                break;
+            default:
+                p.setBackground(java.awt.Color.LIGHT_GRAY);
         }
+        p.setOpaque(true);
+    }
 
     void remov(){
         this.remove(W);
@@ -165,6 +180,7 @@ public class Process extends JPanel {
         this.revalidate();
         this.repaint();
     }
+
     @Override
     public String toString() {
         return "id=" + id + ", state=" + state + "\n arraivaltime=" + arraivaltime + ", burstTime=" + burstTime + "\n remainingTime=" + remainingTime + ", time2Die=" + time2Die + "\n";
