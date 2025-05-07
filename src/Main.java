@@ -243,9 +243,7 @@ public class Main extends javax.swing.JFrame {
     
     public Main() {
         initComponents();
-//        jPanel2.setLayout(new FlowLayout());
         jPanel2.setSize(476, 208);
-//        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
         jPanel2.setLayout(new java.awt.GridLayout(8, 4, 10, 10));
         time.setText("Time: "+tim);
         
@@ -278,7 +276,6 @@ public class Main extends javax.swing.JFrame {
         p=new Process(18, 2,this);
         Totalprocess.add(p);jPanel2.add(p);
         
-        System.err.println("stop");
         
         avgw.setVisible(false);
         avgt.setVisible(false);
@@ -348,8 +345,8 @@ public class Main extends javax.swing.JFrame {
 //functions
 
     int timeParse(){
-        String fullText = time.getText();  // Example: "Time: 5"
-        String numberPart = fullText.substring(6);  // Skips "Time: " (6 characters)
+        String fullText = time.getText();  
+        String numberPart = fullText.substring(6);  
         return Integer.parseInt(numberPart);
     }
     
@@ -370,10 +367,10 @@ public class Main extends javax.swing.JFrame {
     time.setText("Time: 0");
     play = false;
     timerbtn.setText("   ▶️");
-    running = null; // Reset the running process
+    running = null; 
 
     Process.counter = 0;
-    jPanel2.removeAll(); // clear UI
+    jPanel2.removeAll(); 
 
     for (int i = 0; i < Totalprocess.size(); i++) {
         Process old = Totalprocess.get(i);
@@ -403,24 +400,6 @@ public class Main extends javax.swing.JFrame {
 
     Process updatingTime() {
         
-//        Process p = Checkstate();
-//        
-//        colorize(p);
-//        if (p != null) 
-//        {   
-//            p.remainingTime--;
-//            if (p.remainingTime == 0 && !p.getLstate().equals("Finished")) { 
-//                p.setLstate("Finished",tim);
-//                p.time2Die = tim+1;
-//                finishedProcess++;
-//                p.isExist=false;
-//            }
-//        }
-//        if(finishedProcess == Process.counter)
-//        {
-//            findWTR();
-//        }
-//        return p;
         
         System.out.println("Time: " + tim);
         Process p = Checkstate();
@@ -544,15 +523,12 @@ public class Main extends javax.swing.JFrame {
     Process getSJF() {
         Process shortest = null;
 
-        // First check if there's a currently running process
         for (Process p : Totalprocess) {
             if (p.getLstate().equals("Running")) {
-                // In non-preemptive SJF, we should let the running process continue
                 return p;
             }
         }
 
-        // If no process is running, find the shortest job that has arrived
         for (Process p : Totalprocess) {
             if (p.arraivaltime <= tim && 
                 !p.getLstate().equals("Finished") && 
@@ -567,10 +543,9 @@ public class Main extends javax.swing.JFrame {
     Process getSRT() {
         Process shortestRemaining = null;
 
-        // Only consider processes that have arrived and aren't finished
         for (Process p : Totalprocess) {
-            if (p.arraivaltime <= tim &&          // Process has arrived
-                p.remainingTime > 0 ) {     // Additional state check
+            if (p.arraivaltime <= tim && 
+                p.remainingTime > 0 ) { 
 
                 if (shortestRemaining == null || 
                     p.remainingTime < shortestRemaining.remainingTime) {
