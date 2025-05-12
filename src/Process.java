@@ -1,5 +1,4 @@
 
-
 import java.awt.FlowLayout;
 import javax.swing.*;
 import java.awt.event.*;
@@ -14,59 +13,47 @@ public class Process extends JPanel {
     int arraivaltime;
     public int burstTime;
     
-    public int remainingTime; // how much time left
-    public int time2Die = -1; // the time of finish of the process
-    public boolean isExist = true;
+    public int remainingTime;//how much time left
+    public int time2Die=-1;//the time of finish of the process
+    public boolean isExist=true;
     JLabel lname = new JLabel();
     private JLabel lstate = new JLabel();
-    JLabel W = new JLabel();
-    JLabel T = new JLabel();
-    JLabel R = new JLabel();
+    JLabel W= new JLabel();
+    JLabel T= new JLabel();
+    JLabel R= new JLabel();
     
-    int waitingTime = 0;
-    int responseTime = -1;
-    int turnaroundTime = 0;
     
-    Main m;
+    int waitingTime=0;
+    int responseTime=-1;
+    int turnaroundTime=0;
     
-    public Process(int arraivaltime, int burstTime, Main m) {
+    public Process(int arraivaltime, int burstTime) {
         setSize(150, 150);
         setLayout(new FlowLayout());
-        this.m = m;
+
         this.id = ++counter;  // assign then increment counter
         
         this.arraivaltime = arraivaltime;
         this.burstTime = burstTime;
         this.remainingTime = burstTime;
         
-        if (this.arraivaltime > 0) {
+        if(this.arraivaltime>0)
+        {
             this.state = "Not Arrived";
-        } else {
+        }else{
             this.state = "Arrived";
         }
-        
-        Process p = m.Checkstate(this);
-        if(p==null)
-        {
-            System.out.println(this.id +" error it is null "+p.id );
-        }else
-        {
-            System.out.println("inside process "+p.id );
-        }
-        if (this == p) {
-            
-            state="Running";
-            responseTime=0;
-            System.err.println(this.id+" running");
-            
-        }
-        
         this.updateProcessUI(this);
         lname.setText("P" + this.id);
         lstate.setText(state);
         
+        
+        
+        
         add(lname);
         add(lstate);
+        
+        
         
         Timer clickTimer = new Timer(250, null); // 250ms delay
         clickTimer.setRepeats(false); // Run only once
@@ -79,7 +66,7 @@ public class Process extends JPanel {
                     clickTimer.stop();
                     clickTimer.setInitialDelay(250);
                     clickTimer.addActionListener(evt -> {
-                        // Single click action here if needed
+                        
                     });
                     clickTimer.start();
                 } else if (e.getClickCount() == 2) {
@@ -91,9 +78,11 @@ public class Process extends JPanel {
             }
         });
     }
+
     
-    
+    //to control the process state then change process color
     public void setLstate(String lstate,int time) {
+        time++;
         if (this.state.equals("Finished")) return; // prevent re-setting if already finished
         
         this.state = lstate;
@@ -102,12 +91,13 @@ public class Process extends JPanel {
         {
             if (time2Die == -1) time2Die = time;
             
+            this.lstate.setText(lstate + " at time " + time2Die);
             
             turnaroundTime=time-arraivaltime;
             
             System.out.println(this.lstate.getText());
             
-            waitingTime = time2Die-(arraivaltime+burstTime);
+            edit();
             W.setText("WaitingTime: "+waitingTime);
             T.setText("TurnaroundTime: "+turnaroundTime);
             R.setText("ResponseTime: "+responseTime);
@@ -124,6 +114,7 @@ public class Process extends JPanel {
         if(state!="Finished" && state!="Not Arrived" && state=="Running" && responseTime==-1)
         {
             
+            time--;
             responseTime=time-arraivaltime;
 //            System.out.println(responseTime+"="+time+" - "+arraivaltime);
             
@@ -131,10 +122,28 @@ public class Process extends JPanel {
 
 
     }
-    
-    public String getLstate() {
-            return state;
+    public void setLstate(int time, String lstate) {
+        
+
+
+
+        
+        this.state = lstate;
+        this.lstate.setText(lstate);
+        this.updateProcessUI(this);
+
+        if(state!="Finished" && state!="Not Arrived" && state=="Running" && responseTime==-1)
+        {
+            
+            time--;
+            responseTime=time-arraivaltime;
+//            System.out.println(responseTime+"="+time+" - "+arraivaltime);
+            
         }
+        }
+    public String getLstate() {
+        return state;
+    }
     
     
     
@@ -179,7 +188,11 @@ public class Process extends JPanel {
         this.revalidate();
         this.repaint();
     }
-
+    void edit(){
+        
+        waitingTime = time2Die-(arraivaltime+burstTime);
+//        System.out.println(id+"- "+waitingTime+" = "+time2Die+" - "+arraivaltime+" + "+burstTime);
+    }
     @Override
     public String toString() {
         return "id=" + id + ", state=" + state + "\n arraivaltime=" + arraivaltime + ", burstTime=" + burstTime + "\n remainingTime=" + remainingTime + ", time2Die=" + time2Die + "\n";
